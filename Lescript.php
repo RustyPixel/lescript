@@ -7,6 +7,7 @@ class Lescript
     public $ca = 'https://acme-v01.api.letsencrypt.org';
     // public $ca = 'https://acme-staging.api.letsencrypt.org'; // testing
     public $license = 'https://letsencrypt.org/documents/LE-SA-v1.0.1-July-27-2015.pdf';
+    public $rootcert = 'https://letsencrypt.org/certs/isrgrootx1.pem.txt';
     public $countryCode = 'CZ';
     public $state = "Czech Republic";
 
@@ -215,6 +216,9 @@ class Lescript
 
         $this->log("Saving chain.pem");
         file_put_contents($domainPath . "/chain.pem", implode("\n", $certificates));
+
+        $this->log("Saving root_ca_bundle.pem");
+        file_put_contents($domainPath . "/root_ca_bundle.pem", file_get_contents($domainPath . "/chain.pem") . "\n" . file_get_contents($this->rootcert));
 
         $this->log("Done !!§§!");
     }
